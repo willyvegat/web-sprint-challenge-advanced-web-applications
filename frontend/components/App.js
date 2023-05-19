@@ -9,6 +9,7 @@ import ArticleForm from './ArticleForm'
 import Spinner from './Spinner'
 
 import { axiosWithAuth} from '../axios/index';
+import { AuthRoute } from './AuthRoute';
 
 const articlesUrl = 'http://localhost:9000/api/articles'
 const loginUrl = 'http://localhost:9000/api/login'
@@ -96,8 +97,8 @@ export default function App() {
     resetMessageSpinner();
     axiosWithAuth().post(articlesUrl, article)
       .then(res => {
-        setArticles(...articles, 
-          res.data.article);
+        setArticles([...articles, 
+          res.data.article]);
         setMessage(res.data.message);
         setSpinnerOn(false);
       })
@@ -142,8 +143,10 @@ export default function App() {
           <Route path="/" element={<LoginForm login={login} />} />
           <Route path="articles" element={
             <>
-              <ArticleForm postArticle={postArticle} updateArticle={updateArticle} />
-              <Articles getArticles={getArticles} articles={articles} />
+              <AuthRoute>
+                <ArticleForm postArticle={postArticle} updateArticle={updateArticle} />
+                <Articles getArticles={getArticles} articles={articles} />
+              </AuthRoute>
             </>
           } />
         </Routes>
