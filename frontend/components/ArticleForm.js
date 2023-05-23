@@ -17,6 +17,7 @@ export default function ArticleForm(props) {
 
 
   useEffect(() => {
+    console.log("hello");
     // ✨ implement
     // Every time the `currentArticle` prop changes, we should check it for truthiness:
     // if it's truthy, we should set its title, text and topic into the corresponding
@@ -42,9 +43,7 @@ export default function ArticleForm(props) {
     // depending on the truthyness of the `currentArticle` prop.
     articles.map(article => {
       if (article.article_id === currentArticleId) {
-        updateArticle(values)
-        // console.log(article);
-        console.log(values);
+        updateArticle({ article_id: values.article_id, article: values})
       }
       else {
         postArticle(values)

@@ -111,14 +111,20 @@ export default function App() {
   const updateArticle = ({ article_id, article }) => {
     // ✨ implement
     // You got this!
-    console.log("inside updateArticle: ", { article_id, article })
-    console.log("edit click")
     resetMessageSpinner();
     axiosWithAuth().put(`${articlesUrl}/${article_id}`, article)
      .then(res => {
-      console.log(".then: ", res)
-  
-      // setCurrentArticleId(article_id)
+      setArticles(
+        articles.map((article) => {
+          if (article.article_id === res.data.article.article_id) {
+            return res.data.article;
+          }
+          else {
+            return article;
+          }
+        })
+      )
+      // setCurrentArticleId(null);
       setMessage("message: ", res.data.message);
       setSpinnerOn(false);
      })
