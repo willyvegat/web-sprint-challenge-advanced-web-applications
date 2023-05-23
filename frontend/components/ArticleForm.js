@@ -15,7 +15,6 @@ export default function ArticleForm(props) {
     currentArticle 
   } = props;
 
-// console.log("clicked id: ", currentArticleId)
 
   useEffect(() => {
     // ✨ implement
@@ -41,8 +40,16 @@ export default function ArticleForm(props) {
     // ✨ implement
     // We must submit a new post or update an existing one,
     // depending on the truthyness of the `currentArticle` prop.
-    postArticle(values);
-    // updateArticle()
+    articles.map(article => {
+      if (article.article_id === currentArticleId) {
+        updateArticle(values)
+        // console.log(article);
+        console.log(values);
+      }
+      else {
+        postArticle(values)
+      }
+    })
     setValues(initialFormValues);
   }
 
@@ -83,7 +90,7 @@ export default function ArticleForm(props) {
       </select>
       <div className="button-group">
         <button disabled={isDisabled()} id="submitArticle">Submit</button>
-        <button onClick={() => setValues(initialFormValues)}>Cancel edit</button>
+        <button onClick={Function.prototype}>Cancel edit</button>
       </div>
     </form>
   )

@@ -111,22 +111,22 @@ export default function App() {
   const updateArticle = ({ article_id, article }) => {
     // ✨ implement
     // You got this!
-    // console.log("edit click")
-    // resetMessageSpinner();
-    // axiosWithAuth().put(`${articlesUrl}/${article_id}`, article)
-    //  .then(res => {
-    //   console.log(".then: ", res)
-    //   setArticles(articles.map(newArticle => {
-    //     return newArticle.article_id === article.article_id ? res.data.article : newArticle
-    //   }))
-    //   // setCurrentArticleId(article_id)
-    //   setMessage("message: ", res.data.message);
-    //   setSpinnerOn(false);
-    //  })
-    //  .catch(err => {
-    //   setMessage(err.response.data.message)
-    //   setSpinnerOn(false);
-    //  })
+    console.log("inside updateArticle: ", { article_id, article })
+    console.log("edit click")
+    resetMessageSpinner();
+    axiosWithAuth().put(`${articlesUrl}/${article_id}`, article)
+     .then(res => {
+      console.log(".then: ", res)
+  
+      // setCurrentArticleId(article_id)
+      setMessage("message: ", res.data.message);
+      setSpinnerOn(false);
+     })
+     .catch(err => {
+      console.log({ err })
+      // setMessage(err.response.data.message)
+      setSpinnerOn(false);
+     })
   }
 
   const deleteArticle = article_id => {
