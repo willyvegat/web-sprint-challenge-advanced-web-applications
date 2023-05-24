@@ -91,7 +91,6 @@ export default function App() {
     // The flow is very similar to the `getArticles` function.
     // You'll know what to do! Use log statements or breakpoints
     // to inspect the response from the server.
-    console.log(article);
     axiosWithAuth().post(articlesUrl, article)
       .then(res => {
         setArticles([...articles, 
@@ -133,23 +132,17 @@ export default function App() {
 
   const deleteArticle = article_id => {
     // ✨ implement
-    
-    // console.log("delete click");
-    // resetMessageSpinner();
-    // axiosWithAuth().delete(`${articlesUrl}/${article_id}`)
-    //   .then(res => {
-    //     console.log(".then:",res);
-    //     getArticles();
-    //     // setArticles(articles.filter(article => article.id !== article_id))
-    //     console.log("message: ", res.data.message)
-    //     setMessage(res.data.message);
-    //     setSpinnerOn(false);
-    //   })
-    //   .catch(err => {
-    //     console.log({err})
-    //     setSpinnerOn(false);
-    //   })
-    //   .finally(resetMessageSpinner()) 
+    axiosWithAuth().delete(`${articlesUrl}/${article_id}`)
+      .then(res => {
+        setArticles(articles.filter(article => article.article_id !== article_id))
+        setMessage(res.data.message);
+        setSpinnerOn(false);
+      })
+      .catch(err => {
+        console.log({err})
+        setSpinnerOn(false);
+      })
+      .finally(resetMessageSpinner()) 
   }
 
   return (
