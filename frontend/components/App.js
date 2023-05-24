@@ -9,7 +9,6 @@ import ArticleForm from './ArticleForm'
 import Spinner from './Spinner'
 
 import { axiosWithAuth} from '../axios/index';
-import { AuthRoute } from './AuthRoute';
 
 const articlesUrl = 'http://localhost:9000/api/articles'
 const loginUrl = 'http://localhost:9000/api/login'
@@ -74,7 +73,6 @@ export default function App() {
     // if it's a 401 the token might have gone bad, and we should redirect to login.
     // Don't forget to turn off the spinner!
     
-    resetMessageSpinner();
     axiosWithAuth().get(articlesUrl)
       .then(res => {
         setArticles(res.data.articles);
@@ -86,6 +84,7 @@ export default function App() {
         setMessage(err.response.data.message);
         setSpinnerOn(false);
       })
+      .finally(resetMessageSpinner())
   }
 
   const postArticle = article => {
@@ -94,7 +93,6 @@ export default function App() {
     // You'll know what to do! Use log statements or breakpoints
     // to inspect the response from the server.
 
-    resetMessageSpinner();
     axiosWithAuth().post(articlesUrl, article)
       .then(res => {
         setArticles([...articles, 
@@ -106,12 +104,12 @@ export default function App() {
         setMessage(err.response.data.message)
         setSpinnerOn(false);
       })
+      .finally(resetMessageSpinner())
   }
 
   const updateArticle = ({ article_id, article }) => {
     // ✨ implement
     // You got this!
-    resetMessageSpinner();
     axiosWithAuth().put(`${articlesUrl}/${article_id}`, article)
      .then(res => {
       setArticles(
@@ -133,6 +131,7 @@ export default function App() {
       // setMessage(err.response.data.message)
       setSpinnerOn(false);
      })
+     .finally(resetMessageSpinner())
   }
 
   const deleteArticle = article_id => {
@@ -153,6 +152,7 @@ export default function App() {
     //     console.log({err})
     //     setSpinnerOn(false);
     //   })
+    //   .finally(resetMessageSpinner()) 
   }
 
   return (
@@ -171,24 +171,22 @@ export default function App() {
           <Route path="/" element={<LoginForm login={login} />} />
           <Route path="articles" element={
             <>
-              <AuthRoute>
-                <ArticleForm 
-                  postArticle={postArticle} 
-                  updateArticle={updateArticle} 
-                  setCurrentArticleId={setCurrentArticleId} 
-                  currentArticleId={currentArticleId} 
-                  articles={articles} 
-                  // currentArticle={}
-                />
+              <ArticleForm 
+                postArticle={postArticle} 
+                updateArticle={updateArticle} 
+                setCurrentArticleId={setCurrentArticleId} 
+                currentArticleId={currentArticleId} 
+                articles={articles} 
+                // currentArticle={}
+              />
 
-                <Articles 
-                  getArticles={getArticles} 
-                  articles={articles}  
-                  setCurrentArticleId={setCurrentArticleId} 
-                  currentArticleId={currentArticleId} 
-                  deleteArticle={deleteArticle}
-                />
-              </AuthRoute>
+              <Articles 
+                getArticles={getArticles} 
+                articles={articles}  
+                setCurrentArticleId={setCurrentArticleId} 
+                currentArticleId={currentArticleId} 
+                deleteArticle={deleteArticle}
+              />
             </>
           } />
         </Routes>
