@@ -48,8 +48,6 @@ export default function App() {
     // On success, we should set the token to local storage in a 'token' key,
     // put the server success message in its proper state, and redirect
     // to the Articles screen. Don't forget to turn off the spinner!
-   
-    resetMessageSpinner();
     axios.post(loginUrl, {username, password})
       .then(res => {
         localStorage.setItem('token', res.data.token);
@@ -58,9 +56,10 @@ export default function App() {
         setSpinnerOn(false);
       })
       .catch(err => {
-        setMessage(err.response.data.message);
+        console.log({err});
         setSpinnerOn(false);
       })
+      .finally(resetMessageSpinner());
   }
 
   const getArticles = () => {
@@ -92,7 +91,7 @@ export default function App() {
     // The flow is very similar to the `getArticles` function.
     // You'll know what to do! Use log statements or breakpoints
     // to inspect the response from the server.
-
+    console.log(article);
     axiosWithAuth().post(articlesUrl, article)
       .then(res => {
         setArticles([...articles, 
@@ -122,13 +121,11 @@ export default function App() {
           }
         })
       )
-      // setCurrentArticleId(null);
-      setMessage("message: ", res.data.message);
+      setMessage(res.data.message);
       setSpinnerOn(false);
      })
      .catch(err => {
       console.log({ err })
-      // setMessage(err.response.data.message)
       setSpinnerOn(false);
      })
      .finally(resetMessageSpinner())
@@ -158,7 +155,7 @@ export default function App() {
   return (
     // ✨ fix the JSX: `Spinner`, `Message`, `LoginForm`, `ArticleForm` and `Articles` expect props ❗
     <>
-      <Spinner />
+      <Spinner on={spinnerOn} />
       <Message message={message} />
       <button id="logout" onClick={logout}>Logout from app</button>
       <div id="wrapper" style={{ opacity: spinnerOn ? "0.25" : "1" }}> {/* <-- do not change this line */}
@@ -177,7 +174,6 @@ export default function App() {
                 setCurrentArticleId={setCurrentArticleId} 
                 currentArticleId={currentArticleId} 
                 articles={articles} 
-                // currentArticle={}
               />
 
               <Articles 
